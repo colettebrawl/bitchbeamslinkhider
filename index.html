@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitch Beams - Link Hider</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #2e2e2e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://www.transparenttextures.com/patterns/diagonal-stripes.png');
+            background-size: cover;
+        }
+
+        .container {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff77ff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            font-weight: 600;
+            animation: titleAnimation 1.5s ease-out;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 1em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #6a0dad, #8a2be2);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #5a009d, #7b68ee);
+            transform: scale(1.05);
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ff77ff;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #6a0dad;
+            border-radius: 10px;
+            background: #3a3a3a;
+            color: #ffffff;
+            font-size: 1em;
+        }
+
+        .input-group input:focus {
+            border-color: #8a2be2;
+            outline: none;
+            box-shadow: 0 0 5px rgba(138, 43, 226, 0.7);
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #ff77ff;
+            white-space: pre-wrap;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        .result a {
+            color: #ff77ff;
+            text-decoration: none;
+            border-bottom: 1px solid #ff77ff;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .result a:hover {
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+
+        .copy-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #ffffff;
+            background: #6a0dad;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .copy-button:hover {
+            background: #5a009d;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes titleAnimation {
+            0% { transform: translateY(-20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Bitch Beams - Link Hider</h1>
+        <button class="button" onclick="showHideForm('vip')">Hide VIP Server Link</button>
+        <button class="button" onclick="showHideForm('profile')">Hide Profile Link</button>
+
+        <div id="form-container" style="display:none;">
+            <div class="input-group">
+                <label for="link">Enter your link:</label>
+                <input type="text" id="link" placeholder="Enter your link here">
+            </div>
+            <button class="button" onclick="hideLink()">Hide Link</button>
+            <div id="result" class="result"></div>
+            <button id="copy-button" class="copy-button" style="display:none;" onclick="copyLink()">Copy Link</button>
+        </div>
+    </div>
+    <script>
+        function showHideForm(type) {
+            document.getElementById('form-container').style.display = 'block';
+            document.getElementById('form-container').dataset.type = type;
+        }
+
+        function hideLink() {
+            const link = document.getElementById('link').value;
+            const type = document.getElementById('form-container').dataset.type;
+            let baseLink;
+
+            if (type === 'vip') {
+                baseLink = 'https://roblox.com/games/2753915549/Blox-Fruits?privateServerLinkCode=09259687772634955025412237160507';
+            } else if (type === 'profile') {
+                baseLink = 'https://www.roblox.com/users/5407625142/profile';
+            }
+
+            const hiddenLink = `[${baseLink}](${link})`;
+            document.getElementById('result').textContent = hiddenLink;
+            document.getElementById('copy-button').style.display = 'inline-block';
+        }
+
+        function copyLink() {
+            const resultText = document.getElementById('result').textContent;
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
