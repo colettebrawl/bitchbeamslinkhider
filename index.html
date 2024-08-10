@@ -184,18 +184,18 @@
         }
 
         function shortenLink(link) {
-    const apiUrl = `https://api.tinyurl.com/create?url=${encodeURIComponent(link)}&format=json`;
+            const apiUrl = `https://is.gd/create.php?format=simple&url=${encodeURIComponent(link)}`;
 
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const shortLink = data.data.tiny_url || 'Error shortening link';
-            displayResult(shortLink);
-        })
-        .catch(error => {
-            displayResult('Error shortening link: ' + error);
-        });
-}
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(shortLink => {
+                    displayResult(shortLink);
+                })
+                .catch(error => {
+                    displayResult('Error shortening link: ' + error);
+                });
+        }
+
         function displayResult(text) {
             document.getElementById('result').textContent = text;
             document.getElementById('copy-button').style.display = 'inline-block';
