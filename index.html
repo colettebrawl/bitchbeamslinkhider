@@ -141,13 +141,14 @@
         <h1 class="title">Bitch Beams - Link Hider</h1>
         <button class="button" onclick="showHideForm('vip')">Hide VIP Server Link</button>
         <button class="button" onclick="showHideForm('profile')">Hide Profile Link</button>
+        <button class="button" onclick="showHideForm('shorten')">Shorten Link</button>
 
         <div id="form-container" style="display:none;">
             <div class="input-group">
                 <label for="link">Enter your link:</label>
                 <input type="text" id="link" placeholder="Enter your link here">
             </div>
-            <button class="button" onclick="hideLink()">Hide Link</button>
+            <button class="button" onclick="processLink()">Process Link</button>
             <div id="result" class="result"></div>
             <button id="copy-button" class="copy-button" style="display:none;" onclick="copyLink()">Copy Link</button>
         </div>
@@ -158,19 +159,46 @@
             document.getElementById('form-container').dataset.type = type;
         }
 
-        function hideLink() {
+        function processLink() {
             const link = document.getElementById('link').value;
             const type = document.getElementById('form-container').dataset.type;
+
+            if (type === 'shorten') {
+                shortenLink(link);
+            } else {
+                hideLink(link, type);
+            }
+        }
+
+        function hideLink(link, type) {
             let baseLink;
 
             if (type === 'vip') {
-                baseLink = 'https//roblox.com/games/2753915549/Blox-Fruits?privateServerLinkCode=09259687772634955025412237160507';
+                baseLink = 'https://roblox.com/games/2753915549/Blox-Fruits?privateServerLinkCode=09259687772634955025412237160507';
             } else if (type === 'profile') {
-                baseLink = 'https//www.roblox.com/users/5407625142/profile';
+                baseLink = 'https://www.roblox.com/users/5407625142/profile';
             }
 
             const hiddenLink = `[${baseLink}](${link})`;
-            document.getElementById('result').textContent = hiddenLink;
+            displayResult(hiddenLink);
+        }
+
+        function shortenLink(link) {
+            const apiUrl = `https://urlverkorten.com/api?url=${encodeURIComponent(link)}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const shortLink = data.shortenedUrl || 'Error shortening link';
+                    displayResult(shortLink);
+                })
+                .catch(error => {
+                    displayResult('Error shortening link: ' + error);
+                });
+        }
+
+        function displayResult(text) {
+            document.getElementById('result').textContent = text;
             document.getElementById('copy-button').style.display = 'inline-block';
         }
 
